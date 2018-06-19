@@ -33,7 +33,7 @@ def get_cmd_list():
     cmd_list = []
     file_name_list = os.listdir(base_cmd_dir)
     for file_name in file_name_list:
-        cmd_str = "wkhtmltopdf --read-args-from-stdin < %s" % base_cmd_dir + file_name
+        cmd_str = "wkhtmltopdf --margin-top 10mm  --margin-bottom 10mm --margin-left 10mm --margin-right 10mm --read-args-from-stdin < %s" % base_cmd_dir + file_name
         cmd_list.append(cmd_str)
     return cmd_list
 
