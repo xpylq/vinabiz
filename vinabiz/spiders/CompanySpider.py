@@ -71,12 +71,15 @@ class CompanySpider(scrapy.Spider):
 
     def porcess_data(self, data, td_list, key, td_list_index):
         try:
-            text = td_list[td_list_index].css("::text").extract_first().replace("\n", "")
-            text = text.replace("'", "\\\'")
-            data[key] = text
+            result = ''
+            text_list = td_list[td_list_index].css("::text").extract()
+            for text in text_list:
+                result += text
+            result = result.replace("\n", "")
+            result = result.replace("'", "\\\'")
+            data[key] = result
         except Exception as e:
             data[key] = ""
-
 
 if __name__ == "__main__":
     configure_logging({"LOG_FORMAT": "%(levelname)s: %(message)s"})
