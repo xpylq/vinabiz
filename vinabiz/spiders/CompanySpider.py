@@ -21,7 +21,7 @@ class CompanySpider(scrapy.Spider):
 
     def start_requests(self):
         # 遍历列表url
-        for i in range(1800, 9551):
+        for i in range(1, 9551):
             list_url = "https://vinabiz.org/categories/tinhthanh/ha-noi/310030003100/%s" % str(i)
             yield scrapy.Request(url=list_url, callback=self.parse_list)
 
