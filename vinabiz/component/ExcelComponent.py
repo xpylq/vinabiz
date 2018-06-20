@@ -1,7 +1,7 @@
 import vinabiz.component.dbComponent as dbComponent
 import csv
 
-base_csv_dir = "/Users/youzhihao/Downloads/vinabiz/csv"
+base_csv_dir = "F:\\vinabiz\\csv"
 
 
 def excel():
@@ -19,6 +19,7 @@ def excel():
         list_temp_1.append(data['a3'])
         list_temp_1.append(data['a4'])
         list_temp_1.append(data['a5'])
+        list_temp_1.append(data['a6'])
         list_temp_1.append(data['a7'])
         list_1.append(list_temp_1)
         # 第二个csv
@@ -52,57 +53,57 @@ def excel():
         list_temp_3.append(data['c4'])
         list_temp_3.append(data['c5'])
         list_temp_3.append(data['c6'])
-        list_2.append(list_temp_3)
+        list_3.append(list_temp_3)
 
-    with open(base_csv_dir + "/business_info.csv", "w") as csvfile:
+    with open(base_csv_dir + "\\business_info.csv", "w", encoding="utf-8") as csvfile:
         header = []
-        header.append("guid")
-        header.append("url")
-        header.append("Official name")
-        header.append("Trading name")
-        header.append("Business Code")
-        header.append("Date Range")
-        header.append("Tax authorities manage")
-        header.append("Date of commencement of operation")
-        header.append("Status")
+        header.append("\"guid\"")
+        header.append("\"url\"")
+        header.append("\"Official name\"")
+        header.append("\"Trading name\"")
+        header.append("\"Business Code\"")
+        header.append("\"Date Range\"")
+        header.append("\"Tax authorities manage\"")
+        header.append("\"Date of commencement of operation\"")
+        header.append("\"Status\"")
         writer = csv.writer(csvfile)
         writer.writerow(header)
         for row in list_1:
             writer.writerow(row)
-    with open(base_csv_dir + "/contact_inf.csv", "w") as csvfile:
+    with open(base_csv_dir + "\\contact_inf.csv", "w", encoding="utf-8") as csvfile:
         header = []
-        header.append("guid")
-        header.append("url")
-        header.append("Official name")
-        header.append("Office address")
-        header.append("Phone")
-        header.append("Fax")
-        header.append("Email")
-        header.append("Website")
-        header.append("Representative")
-        header.append("Phone")
-        header.append("Representative address")
-        header.append("Manager")
-        header.append("Phone Director")
-        header.append("Address Director	")
-        header.append("Accountant")
-        header.append("Phone accounting")
-        header.append("Account address	")
+        header.append("\"guid\"")
+        header.append("\"url\"")
+        header.append("\"Official name\"")
+        header.append("\"Office address\"")
+        header.append("\"Phone\"")
+        header.append("\"Fax\"")
+        header.append("\"Email\"")
+        header.append("\"Website\"")
+        header.append("\"Representative\"")
+        header.append("\"Phone\"")
+        header.append("\"Representative address\"")
+        header.append("\"Manager\"")
+        header.append("\"Phone Director\"")
+        header.append("\"Address Director\"")
+        header.append("\"Accountant\"")
+        header.append("\"Phone accounting\"")
+        header.append("\"Account address\"")
         writer = csv.writer(csvfile)
         writer.writerow(header)
         for row in list_2:
             writer.writerow(row)
-    with open(base_csv_dir + "/industry_info.csv", "w") as csvfile:
+    with open(base_csv_dir + "\\industry_info.csv", "w", encoding="utf-8") as csvfile:
         header = []
-        header.append("guid")
-        header.append("url")
-        header.append("Official name")
-        header.append("Main job")
-        header.append("Economic field")
-        header.append("Type of economic")
-        header.append("Type of organization")
-        header.append("Class chapters")
-        header.append("Item type")
+        header.append("\"guid\"")
+        header.append("\"url\"")
+        header.append("\"Official name\"")
+        header.append("\"Main job\"")
+        header.append("\"Economic field\"")
+        header.append("\"Type of economic\"")
+        header.append("\"Type of organization\"")
+        header.append("\"Class chapters\"")
+        header.append("\"Item type\"")
         writer = csv.writer(csvfile)
         writer.writerow(header)
         for row in list_3:

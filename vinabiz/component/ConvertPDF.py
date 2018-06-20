@@ -3,8 +3,8 @@ import os
 import threading
 import shutil
 
-base_pdf_dir = "/Users/youzhihao/Downloads/vinabiz/pdf"
-base_cmd_dir = "/Users/youzhihao/Downloads/vinabiz/wkhtmltopdf/"
+base_pdf_dir = "F:\\vinabiz\\pdf\\"
+base_cmd_dir = "F:\\vinabiz\\wkhtmltopdf\\"
 
 
 def createCmdFile(min_id, max_id, thread_num):
@@ -23,7 +23,7 @@ def createCmdFile(min_id, max_id, thread_num):
         if file_name in list:
             continue
         mod = count % thread_num
-        cmd = "%s %s" % (data['url'], base_pdf_dir + "/" + file_name)
+        cmd = "%s %s" % (data['url'], "F:\\\\vinabiz\\\\pdf\\\\" + file_name)
         file_list[mod].write(cmd + "\n")
         count += 1
     print("还需要生成%d个pdf" % count)
@@ -33,7 +33,9 @@ def get_cmd_list():
     cmd_list = []
     file_name_list = os.listdir(base_cmd_dir)
     for file_name in file_name_list:
-        cmd_str = "wkhtmltopdf --margin-top 10mm  --margin-bottom 10mm --margin-left 10mm --margin-right 10mm --read-args-from-stdin < %s" % base_cmd_dir + file_name
+        cmd_str = "F:\\work\\wkhtmltopdf\\bin\\wkhtmltopdf.exe  --proxy socks5://127.0.0.1:1080 " \
+                  "--margin-top 10mm  --margin-bottom 10mm --margin-left 10mm --margin-right 10mm " \
+                  "--page-size  A2  --zoom 0.75 --read-args-from-stdin < %s" % base_cmd_dir + file_name
         cmd_list.append(cmd_str)
     return cmd_list
 
@@ -48,7 +50,7 @@ class myThread(threading.Thread):
 
 
 if __name__ == "__main__":
-    createCmdFile(1, 10000, 15)
+    createCmdFile(1, 10000, 1)
     for cmd in get_cmd_list():
         myThread(cmd).start()
     input()
