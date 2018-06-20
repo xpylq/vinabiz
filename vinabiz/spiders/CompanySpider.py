@@ -21,7 +21,7 @@ class CompanySpider(scrapy.Spider):
 
     def start_requests(self):
         # 遍历列表url
-        for i in range(1, 9551):
+        for i in range(180, 9555):
             list_url = "https://vinabiz.org/categories/tinhthanh/ha-noi/310030003100/%s" % str(i)
             yield scrapy.Request(url=list_url, callback=self.parse_list)
 
@@ -35,51 +35,89 @@ class CompanySpider(scrapy.Spider):
 
     # 解析详情页
     def parse_company(self, response):
-        td_list = response.css("td:not(.bg_table_td):not(.bg_table_th):not(.padding-0)")
+        td_list = response.css("#wid-detail-info td")
+        index = 0
         data = {}
-        data['guid'] = str(uuid.uuid4())
+        data['guid'] = str(uuid.uuid4()).replace("-", "")
         data['url'] = response.url
-        self.porcess_data(data, td_list, "a1", 0)
-        data['name'] = data['a1']
-        self.porcess_data(data, td_list, "a2", 1)
-        self.porcess_data(data, td_list, "a3", 2)
-        self.porcess_data(data, td_list, "a4", 3)
-        self.porcess_data(data, td_list, "a5", 4)
-        self.porcess_data(data, td_list, "a6", 5)
-        data['a7'] = "".join(response.css("div .alert-success::text").extract()).replace("\n", "")
-        self.porcess_data(data, td_list, "b1", 7)
-        self.porcess_data(data, td_list, "b2", 8)
-        self.porcess_data(data, td_list, "b3", 9)
-        self.porcess_data(data, td_list, "b4", 10)
-        self.porcess_data(data, td_list, "b5", 11)
-        self.porcess_data(data, td_list, "b6", 12)
-        self.porcess_data(data, td_list, "b7", 13)
-        self.porcess_data(data, td_list, "b8", 14)
-        self.porcess_data(data, td_list, "b9", 15)
-        self.porcess_data(data, td_list, "b10", 16)
-        self.porcess_data(data, td_list, "b11", 17)
-        self.porcess_data(data, td_list, "b12", 18)
-        self.porcess_data(data, td_list, "b13", 19)
-        self.porcess_data(data, td_list, "b14", 20)
-        self.porcess_data(data, td_list, "c1", 21)
-        self.porcess_data(data, td_list, "c2", 22)
-        self.porcess_data(data, td_list, "c3", 23)
-        self.porcess_data(data, td_list, "c4", 24)
-        self.porcess_data(data, td_list, "c5", 25)
-        self.porcess_data(data, td_list, "c6", 26)
+        while index < td_list.__len__():
+            td = td_list[index]
+            if td.css("::attr(class)").extract_first() == "bg_table_td":
+                index += 1
+                content = self.porcess_content(td_list[index])
+                title = td.css("::text").extract_first()
+                # BUSINESS
+                if title == 'Tên chính thức':
+                    data['official_name'] = content
+                if title == 'Tên giao dịch':
+                    data['trading_name'] = content
+                if title == 'Mã doanh nghiệp':
+                    data['business_code'] = content
+                if title == 'Ngày cấp':
+                    data['date_range'] = content
+                if title == 'Cơ quan thuế quản lý':
+                    data['tax_authorities_manage'] = content
+                if title == 'Ngày bắt đầu hoạt động':
+                    data['date_of_commencement_of_operation'] = content
+                if title == 'Trạng thái':
+                    data['status'] = content
+                # CONTACT
+                if title == 'Địa chỉ trụ sở':
+                    data['office_address'] = content
+                if title == 'Điện thoại':
+                    data['phone1'] = content
+                if title == 'Fax':
+                    data['fax'] = content
+                if title == 'Email':
+                    data['email'] = content
+                if title == 'Website':
+                    data['website'] = content
+                if title == 'Người đại diện':
+                    data['representative'] = content
+                if title == 'Điện thoại':
+                    data['phone2'] = content
+                if title == 'Địa chỉ người đại diện':
+                    data['representative_address'] = content
+                if title == 'Giám đốc':
+                    data['manager'] = content
+                if title == 'Điện thoại giám đốc':
+                    data['phone_director'] = content
+                if title == 'Địa chỉ giám đốc':
+                    data['address_director'] = content
+                if title == 'Kế toán':
+                    data['accountant'] = content
+                if title == 'Điện thoại kế toán':
+                    data['phone_accounting'] = content
+                if title == 'Địa chỉ kế toán':
+                    data['account_address'] = content
+                # INDUSTRY
+                if title == 'Ngành nghề chính':
+                    data['main_job'] = content
+                if title == 'Lĩnh vực kinh tế':
+                    data['economic_field'] = content
+                if title == 'Loại hình kinh tế':
+                    data['type_of_economic'] = content
+                if title == 'Loại hình tổ chức':
+                    data['type_of_organization'] = content
+                if title == 'Cấp chương':
+                    data['class_chapters'] = content
+                if title == 'Loại khoản':
+                    data['item_type'] = content
+            index += 1
         dbComponent.add_company(data)
 
-    def porcess_data(self, data, td_list, key, td_list_index):
+    def porcess_content(self, td):
         try:
             result = ''
-            text_list = td_list[td_list_index].css("::text").extract()
+            text_list = td.css("::text").extract()
             for text in text_list:
                 result += text
             result = result.replace("\n", "")
             result = result.replace("'", "\\\'")
-            data[key] = result
         except Exception as e:
-            data[key] = ""
+            print(e)
+        return result
+
 
 if __name__ == "__main__":
     configure_logging({"LOG_FORMAT": "%(levelname)s: %(message)s"})

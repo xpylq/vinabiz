@@ -50,7 +50,7 @@ class myThread(threading.Thread):
 
 
 if __name__ == "__main__":
-    createCmdFile(1, 10000, 1)
+    createCmdFile(1, 10000, 25)
     for cmd in get_cmd_list():
         myThread(cmd).start()
     input()

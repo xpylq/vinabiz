@@ -3,7 +3,7 @@ import vinabiz.component.dbComponent as dbComponent
 import requests
 import os
 
-base_html_dir = "/Users/youzhihao/Downloads/vinabiz/html"
+base_html_dir = "F:\\vinabiz\\html"
 base_resource_dir = "/Users/youzhihao/Downloads/vinabiz/content"
 
 
@@ -26,10 +26,7 @@ def convert_html(data):
     out_file_name = base_html_dir + "/" + data['guid'] + ".html"
     response = requests.get(url, timeout=5)
     content = str(response.content, encoding="utf-8")
-    # content = content.replace("/content", base_resource_dir + "/css")
-    # content = content.replace("/scripts", base_resource_dir + "/scripts")
-    # content = content.replace("/cdn-cgi/apps/head", base_resource_dir + "/scripts")
-    with open(out_file_name, "w") as f:
+    with open(out_file_name, "w",encoding="utf-8") as f:
         f.write(content)
         f.flush()
         f.close()
@@ -61,3 +58,7 @@ if __name__ == "__main__":
     myThread(list).start()
     myThread(list).start()
     myThread(list).start()
+    myThread(list).start()
+    myThread(list).start()
+    myThread(list).start()
+
