@@ -14,19 +14,26 @@ class CompanySpider(scrapy.Spider):
     name = "companySpider"
 
     def __init__(self, name=None, **kwargs):
-        self.bloom = BloomFilter(500000, 0.001)
+        self.bloom = BloomFilter(1000000, 0.001)
         for url in dbComponent.get_all_company_url():
             self.bloom.add(url)
+        print("bloomFilter初始化完毕")
         super().__init__(name, **kwargs)
 
     def start_requests(self):
-        # 遍历列表url
-        for i in range(180, 9555):
-            list_url = "https://vinabiz.org/categories/tinhthanh/ha-noi/310030003100/%s" % str(i)
-            yield scrapy.Request(url=list_url, callback=self.parse_list)
+        # category
+        file = open("category.txt", "r", encoding="utf-8")
+        for url in file.readlines():
+            url = url.replace("\n", "")
+            yield scrapy.Request(url=url, callback=self.parse_list)
+        print("start_requests 初始化完毕")
 
     # 解析列表页
     def parse_list(self, response):
+        next_url = response.css(".PagedList-skipToNext a::attr(href)").extract_first()
+        if (next_url is not None) and (next_url != ''):
+            next_url = "https://vinabiz.org" + next_url
+            scrapy.Request(url=next_url, callback=self.parse_list)
         url_list = response.css("h4 a::attr(href)").extract()
         for url in url_list:
             url = "https://vinabiz.org" + url
