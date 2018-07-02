@@ -33,7 +33,7 @@ class CompanySpider(scrapy.Spider):
         next_url = response.css(".PagedList-skipToNext a::attr(href)").extract_first()
         if (next_url is not None) and (next_url != ''):
             next_url = "https://vinabiz.org" + next_url
-            scrapy.Request(url=next_url, callback=self.parse_list)
+            yield scrapy.Request(url=next_url, callback=self.parse_list)
         url_list = response.css("h4 a::attr(href)").extract()
         for url in url_list:
             url = "https://vinabiz.org" + url
